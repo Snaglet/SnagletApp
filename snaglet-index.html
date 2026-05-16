@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Snaglet">
+<meta name="theme-color" content="#2563EB">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Snaglet</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell" id="app">
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <span class="status-time" id="status-time">9:41</span>
+    <div class="status-icons">
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="4" width="3" height="8" rx="1"/><rect x="4" y="2" width="3" height="10" rx="1"/><rect x="8" y="0" width="3" height="12" rx="1"/><rect x="12" y="0" width="3" height="12" rx="1" opacity="0.3"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.5C10.5 2.5 12.7 3.6 14.2 5.3L15.5 4C13.7 1.9 11 .5 8 .5S2.3 1.9.5 4L1.8 5.3C3.3 3.6 5.5 2.5 8 2.5z"/><path d="M8 5.5C9.7 5.5 11.2 6.3 12.2 7.5L13.5 6.2C12.2 4.7 10.2 3.8 8 3.8S3.8 4.7 2.5 6.2L3.8 7.5C4.8 6.3 6.3 5.5 8 5.5z"/><circle cx="8" cy="10" r="1.5"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="currentColor"><rect x="0" y="1" width="22" height="10" rx="2.5" stroke="currentColor" stroke-width="1" fill="none"/><rect x="22" y="3.5" width="2" height="5" rx="1"/><rect x="1.5" y="2.5" width="17" height="7" rx="1.5"/></svg>
+    </div>
+  </div>
+
+  <!-- ===== ONBOARDING ===== -->
+  <div class="screen active" id="screen-onboard">
+    <div class="onboard-hero">
+      <div class="onboard-icon">🎨</div>
+      <h1 class="onboard-title">Welcome to Snaglet!</h1>
+      <p class="onboard-sub">Where kids' artwork comes to life — and every purchase helps the classroom.</p>
+    </div>
+    <div class="scroll-area">
+      <div class="fund-badge">
+        <span class="fund-badge-icon">🏫</span>
+        <div class="fund-badge-text">10% of every purchase goes directly to your child's classroom supply fund</div>
+      </div>
+      <div class="section-label">I am a...</div>
+      <div class="role-selector">
+        <div class="role-btn active" data-role="teacher" onclick="selectRole(this)">
+          <div class="role-btn-icon">👩‍🏫</div>
+          <div class="role-btn-label">Teacher</div>
+        </div>
+        <div class="role-btn" data-role="student" onclick="selectRole(this)">
+          <div class="role-btn-icon">🧒</div>
+          <div class="role-btn-label">Student</div>
+        </div>
+        <div class="role-btn" data-role="family" onclick="selectRole(this)">
+          <div class="role-btn-icon">👨‍👩‍👧</div>
+          <div class="role-btn-label">Family</div>
+        </div>
+      </div>
+      <div id="fields-teacher">
+        <div class="input-group"><label class="input-label">Your name</label><input class="input" placeholder="Mrs. Rivera" value="Mrs. Rivera"></div>
+        <div class="input-group"><label class="input-label">School email</label><input class="input" type="email" placeholder="teacher@school.edu" value="srivera@lincoln.edu"></div>
+        <div class="input-group"><label class="input-label">School name</label><input class="input" placeholder="Lincoln Elementary" value="Lincoln Elementary"></div>
+        <div class="input-group"><label class="input-label">Phone number</label><input class="input" type="tel" placeholder="(555) 000-0000" value="(847) 555-0192"></div>
+      </div>
+      <div id="fields-family" style="display:none">
+        <div class="input-group"><label class="input-label">Your name</label><input class="input" placeholder="Sarah Johnson" value="Sarah Johnson"></div>
+        <div class="input-group"><label class="input-label">Phone number</label><input class="input" type="tel" placeholder="(555) 000-0000"></div>
+        <div class="input-group"><label class="input-label">Relationship to child</label>
+          <select class="input select"><option>Mom</option><option>Dad</option><option>Grandparent</option><option>Guardian</option><option>Friend</option><option>Other</option></select>
+        </div>
+      </div>
+      <div id="fields-student" style="display:none">
+        <div class="input-group"><label class="input-label">Class code</label><input class="input code-input" placeholder="ART-4B9"></div>
+        <div class="input-group"><label class="input-label">4-digit PIN</label><input class="input pin-input" type="password" placeholder="••••" maxlength="4"></div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="handleSignup()">Create Account →</button>
+      <p class="legal-text">By signing up you agree to our Terms of Service and Privacy Policy. Snaglet is fully COPPA-compliant for students under 13.</p>
+    </div>
+  </div>
+
+  <!-- ===== TEACHER HOME ===== -->
+  <div class="screen" id="screen-teacher-home">
+    <div class="top-bar">
+      <div class="logo-mark">
+        <div class="logo-icon">🎨</div>
+        <span class="logo-text">Snag<span class="logo-accent">let</span></span>
+      </div>
+      <button class="icon-btn icon-btn-blue" onclick="showModal('modal-post')" aria-label="New post">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+    </div>
+    <div class="scroll-area">
+      <div class="fund-card">
+        <div class="fund-card-label">🏫 Classroom Supply Fund</div>
+        <div class="fund-card-amount">$47.20</div>
+        <div class="fund-card-sub">Earned this month from family subscriptions</div>
+        <div class="fund-bar-track"><div class="fund-bar-fill" style="width:63%"></div></div>
+        <div class="fund-card-goal">$47.20 of $75 monthly goal</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-num blue">20</div><div class="stat-label">Students</div></div>
+        <div class="stat-card"><div class="stat-num green">17</div><div class="stat-label">Families</div></div>
+        <div class="stat-card clickable" onclick="goScreen('screen-mod')"><div class="stat-num red">3</div><div class="stat-label">To Review</div></div>
+      </div>
+      <div class="section-label">Recent Posts</div>
+      <div id="artwork-feed"></div>
+    </div>
+    <nav class="bottom-nav" id="nav-teacher">
+      <button class="nav-item active" onclick="navTo('screen-teacher-home','nav-teacher',this)"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+      <button class="nav-item" onclick="navTo('screen-students','nav-teacher',this)"><span class="nav-icon">🧒</span><span class="nav-label">Students</span></button>
+      <button class="nav-item" onclick="navTo('screen-mod','nav-teacher',this)"><span class="nav-icon-wrap"><span class="nav-icon">🛡️</span><span class="nav-badge">3</span></span><span class="nav-label">Moderate</span></button>
+      <button class="nav-item" onclick="navTo('screen-profile','nav-teacher',this)"><span class="nav-icon">👩‍🏫</span><span class="nav-label">Profile</span></button>
+    </nav>
+  </div>
+
+  <!-- ===== STUDENTS ===== -->
+  <div class="screen" id="screen-students">
+    <div class="top-bar">
+      <span class="screen-title">My Students</span>
+      <button class="icon-btn icon-btn-green" aria-label="Add student">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+    </div>
+    <div class="scroll-area">
+      <div class="class-code-card">
+        <span class="class-code-icon">🔑</span>
+        <div class="class-code-body">
+          <div class="class-code-main">Class Code: <strong>ART-4B9</strong></div>
+          <div class="class-code-sub">iPad PIN: <strong>7284</strong> · Share with students</div>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="copyCode()">Copy</button>
+      </div>
+      <div class="roster-header">
+        <div class="section-label" style="margin-bottom:0">Class Roster</div>
+        <span class="roster-count">17 of 20 joined</span>
+      </div>
+      <div class="student-grid" id="student-grid"></div>
+    </div>
+    <nav class="bottom-nav" id="nav-students">
+      <button class="nav-item" onclick="navTo('screen-teacher-home','nav-students',this)"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+      <button class="nav-item active" onclick="navTo('screen-students','nav-students',this)"><span class="nav-icon">🧒</span><span class="nav-label">Students</span></button>
+      <button class="nav-item" onclick="navTo('screen-mod','nav-students',this)"><span class="nav-icon-wrap"><span class="nav-icon">🛡️</span><span class="nav-badge">3</span></span><span class="nav-label">Moderate</span></button>
+      <button class="nav-item" onclick="navTo('screen-profile','nav-students',this)"><span class="nav-icon">👩‍🏫</span><span class="nav-label">Profile</span></button>
+    </nav>
+  </div>
+
+  <!-- ===== MODERATION ===== -->
+  <div class="screen" id="screen-mod">
+    <div class="top-bar">
+      <span class="screen-title">Moderation Queue</span>
+      <span class="tag tag-red">3 pending</span>
+    </div>
+    <div class="scroll-area">
+      <div class="info-card">AI reviews every comment before anyone sees it. Green = auto-approved. Yellow &amp; Red = needs your review. Content stays hidden from students until you approve.</div>
+      <div class="section-label" style="color:var(--red)">🔴 Requires Action</div>
+      <div class="mod-item red" id="mod-1">
+        <div class="mod-item-header">
+          <div class="avatar av-sm av-orange">GJ</div>
+          <div class="mod-meta"><div class="mod-who">Grandpa Joe <span class="mod-on">on Emma M.'s art</span></div><div class="mod-time">2 min ago</div></div>
+          <span class="tag tag-red">🔴 Language</span>
+        </div>
+        <div class="mod-content">"That's a damn good painting Emma! Grandpa is so proud of you!"</div>
+        <div class="mod-actions">
+          <button class="btn btn-success btn-sm btn-full" onclick="moderateItem('mod-1','approve')">✓ Approve</button>
+          <button class="btn btn-danger btn-sm btn-full" onclick="moderateItem('mod-1','reject')">✗ Reject</button>
+        </div>
+      </div>
+      <div class="section-label" style="margin-top:16px;color:#D97706">🟡 Worth a Glance</div>
+      <div class="mod-item yellow" id="mod-2">
+        <div class="mod-item-header">
+          <div class="avatar av-sm av-purple">SM</div>
+          <div class="mod-meta"><div class="mod-who">Sarah M. <span class="mod-on">on Liam K.'s art</span></div><div class="mod-time">15 min ago</div></div>
+          <span class="tag tag-yellow">🟡 Tone</span>
+        </div>
+        <div class="mod-content">"Liam, you could have done better on the edges but overall not bad."</div>
+        <div class="mod-actions">
+          <button class="btn btn-success btn-sm btn-full" onclick="moderateItem('mod-2','approve')">✓ Approve</button>
+          <button class="btn btn-danger btn-sm btn-full" onclick="moderateItem('mod-2','reject')">✗ Reject</button>
+        </div>
+      </div>
+      <div class="mod-item yellow" id="mod-3">
+        <div class="mod-item-header">
+          <div class="avatar av-sm av-blue">NK</div>
+          <div class="mod-meta"><div class="mod-who">Noah K. (student) <span class="mod-on">on Sofia R.'s art</span></div><div class="mod-time">1 hour ago</div></div>
+          <span class="tag tag-yellow">🟡 Tone</span>
+        </div>
+        <div class="mod-content">"Why did you draw it like that? It looks weird to me lol"</div>
+        <div class="mod-actions">
+          <button class="btn btn-success btn-sm btn-full" onclick="moderateItem('mod-3','approve')">✓ Approve</button>
+          <button class="btn btn-danger btn-sm btn-full" onclick="moderateItem('mod-3','reject')">✗ Reject</button>
+        </div>
+      </div>
+      <div class="section-label" style="margin-top:16px;color:var(--green)">✅ Auto-Approved Today (8)</div>
+      <div class="cleared-card"><div class="cleared-title">8 comments cleared automatically</div><div class="cleared-sub">All rated 🟢 Clean by AI. Students can see them now.</div></div>
+    </div>
+    <nav class="bottom-nav" id="nav-mod">
+      <button class="nav-item" onclick="navTo('screen-teacher-home','nav-mod',this)"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+      <button class="nav-item" onclick="navTo('screen-students','nav-mod',this)"><span class="nav-icon">🧒</span><span class="nav-label">Students</span></button>
+      <button class="nav-item active" onclick="navTo('screen-mod','nav-mod',this)"><span class="nav-icon">🛡️</span><span class="nav-label">Moderate</span></button>
+      <button class="nav-item" onclick="navTo('screen-profile','nav-mod',this)"><span class="nav-icon">👩‍🏫</span><span class="nav-label">Profile</span></button>
+    </nav>
+  </div>
+
+  <!-- ===== FAMILY FEED ===== -->
+  <div class="screen" id="screen-family-feed">
+    <div class="top-bar">
+      <div class="logo-mark">
+        <div class="logo-icon">🎨</div>
+        <span class="logo-text">Snag<span class="logo-accent">let</span></span>
+      </div>
+      <button class="icon-btn icon-btn-outline" onclick="navTo('screen-notifs','nav-family',document.querySelector('#nav-family .nav-item:nth-child(2)'))" aria-label="Notifications" style="position:relative">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="icon-badge">2</span>
+      </button>
+    </div>
+    <div class="scroll-area">
+      <div class="fund-badge">
+        <span class="fund-badge-icon">🏫</span>
+        <div class="fund-badge-text">Your subscription contributed <strong>$5.89</strong> to Emma's classroom fund this month!</div>
+      </div>
+      <div id="family-feed"></div>
+    </div>
+    <nav class="bottom-nav" id="nav-family">
+      <button class="nav-item active" onclick="navTo('screen-family-feed','nav-family',this)"><span class="nav-icon">🏠</span><span class="nav-label">Feed</span></button>
+      <button class="nav-item" onclick="navTo('screen-notifs','nav-family',this)"><span class="nav-icon-wrap"><span class="nav-icon">🔔</span><span class="nav-badge">2</span></span><span class="nav-label">Alerts</span></button>
+      <button class="nav-item" onclick="navTo('screen-profile','nav-family',this)"><span class="nav-icon">👤</span><span class="nav-label">Account</span></button>
+    </nav>
+  </div>
+
+  <!-- ===== NOTIFICATIONS ===== -->
+  <div class="screen" id="screen-notifs">
+    <div class="top-bar"><span class="screen-title">Notifications</span></div>
+    <div class="scroll-area">
+      <div class="section-label">Today</div>
+      <div class="notif-item unread" onclick="goScreen('screen-family-feed')">
+        <span class="notif-emoji">🌻</span>
+        <div class="notif-body"><div class="notif-title">New artwork posted!</div><div class="notif-text">Mrs. Rivera posted Emma's new painting: "Watercolor Sunflower"</div><div class="notif-time">2 hours ago</div></div>
+      </div>
+      <div class="notif-item unread" onclick="goScreen('screen-family-feed')">
+        <span class="notif-emoji">✨</span>
+        <div class="notif-body"><div class="notif-title">Animation ready!</div><div class="notif-text">Your "Bring to Life" animation of Emma's sunflower is ready to view!</div><div class="notif-time">45 min ago</div></div>
+      </div>
+      <div class="section-label" style="margin-top:16px">Yesterday</div>
+      <div class="notif-item" onclick="goScreen('screen-family-feed')">
+        <span class="notif-emoji">💬</span>
+        <div class="notif-body"><div class="notif-title">New comment approved</div><div class="notif-text">Mrs. Rivera approved your comment on Emma's Rainbow painting</div><div class="notif-time">Yesterday, 4:22 PM</div></div>
+      </div>
+      <div class="notif-item">
+        <span class="notif-emoji">🏫</span>
+        <div class="notif-body"><div class="notif-title">Classroom fund update</div><div class="notif-text">Emma's classroom fund reached $47.20 this month! 🎉</div><div class="notif-time">Yesterday, 8:00 AM</div></div>
+      </div>
+    </div>
+    <nav class="bottom-nav">
+      <button class="nav-item" onclick="goScreen('screen-family-feed')"><span class="nav-icon">🏠</span><span class="nav-label">Feed</span></button>
+      <button class="nav-item active"><span class="nav-icon">🔔</span><span class="nav-label">Alerts</span></button>
+      <button class="nav-item" onclick="goScreen('screen-profile')"><span class="nav-icon">👤</span><span class="nav-label">Account</span></button>
+    </nav>
+  </div>
+
+  <!-- ===== PROFILE ===== -->
+  <div class="screen" id="screen-profile">
+    <div class="profile-hero">
+      <div class="profile-avatar" id="profile-avatar">👩‍🏫</div>
+      <div class="profile-name" id="profile-name">Mrs. Rivera</div>
+      <div class="profile-role" id="profile-role">Lincoln Elementary · 4th Grade Art</div>
+    </div>
+    <div class="scroll-area">
+      <div class="pricing-highlight" id="pricing-block">
+        <div class="pricing-tier-label">Teacher Account</div>
+        <div class="pricing-amount">Free <span class="pricing-period">forever</span></div>
+        <div class="pricing-tagline">You keep Snaglet free so students can share their art 🎨</div>
+        <div class="pricing-features">
+          <div class="pricing-feat">✓ Unlimited student roster management</div>
+          <div class="pricing-feat">✓ Post unlimited artwork</div>
+          <div class="pricing-feat">✓ AI moderation dashboard</div>
+          <div class="pricing-feat">✓ SMS family invitations</div>
+          <div class="pricing-feat">✓ Classroom supply fund tracking</div>
+        </div>
+      </div>
+      <div class="fund-card" style="margin-bottom:16px">
+        <div class="fund-card-label">🏫 Classroom Supply Fund</div>
+        <div class="fund-card-amount">$47.20</div>
+        <div class="fund-card-sub">Earned this month · 17 family subscriptions</div>
+        <div class="fund-bar-track"><div class="fund-bar-fill" style="width:63%"></div></div>
+        <div class="fund-card-goal">Total earned all-time: $284.40</div>
+      </div>
+      <div class="section-label">Account</div>
+      <div class="menu-list">
+        <div class="menu-item"><span class="menu-icon" style="background:var(--blue-light)">🏫</span><span class="menu-label">My Classroom Settings</span><span class="menu-arrow">›</span></div>
+        <div class="menu-item"><span class="menu-icon" style="background:var(--green-light)">📱</span><span class="menu-label">Notification Preferences</span><span class="menu-arrow">›</span></div>
+        <div class="menu-item"><span class="menu-icon" style="background:var(--purple-light)">🔒</span><span class="menu-label">Privacy &amp; Data Settings</span><span class="menu-arrow">›</span></div>
+        <div class="menu-item"><span class="menu-icon" style="background:var(--yellow-light)">📋</span><span class="menu-label">COPPA Compliance Docs</span><span class="menu-arrow">›</span></div>
+        <div class="menu-item" onclick="goScreen('screen-onboard')"><span class="menu-icon" style="background:var(--red-light)">🚪</span><span class="menu-label" style="color:var(--red)">Sign Out</span><span class="menu-arrow">›</span></div>
+      </div>
+    </div>
+    <nav class="bottom-nav" id="nav-profile">
+      <button class="nav-item" id="pnav-home" onclick="profileNav('home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+      <button class="nav-item" id="pnav-mid" onclick="profileNav('mid')"><span class="nav-icon" id="pnav-mid-icon">🧒</span><span class="nav-label" id="pnav-mid-lbl">Students</span></button>
+      <button class="nav-item" id="pnav-mod" onclick="profileNav('mod')"><span class="nav-icon" id="pnav-mod-icon">🛡️</span><span class="nav-label" id="pnav-mod-lbl">Moderate</span></button>
+      <button class="nav-item active"><span class="nav-icon" id="pnav-self-icon">👩‍🏫</span><span class="nav-label">Profile</span></button>
+    </nav>
+  </div>
+
+  <!-- ===== MODAL: POST ===== -->
+  <div class="modal hidden" id="modal-post">
+    <div class="modal-bar">
+      <button class="modal-close" onclick="hideModal('modal-post')">✕</button>
+      <span class="modal-title">New Post</span>
+      <button class="btn btn-primary btn-sm" onclick="submitPost()">Post</button>
+    </div>
+    <div class="scroll-area">
+      <div class="photo-upload-area" id="photo-area" onclick="togglePhotoPreview()">
+        <div id="photo-placeholder"><span style="font-size:36px">📸</span><span class="photo-label">Tap to take or upload photo</span><span class="photo-sub">Camera · Photo Library</span></div>
+        <div id="photo-preview" class="photo-preview hidden">🌻</div>
+      </div>
+      <div class="input-group"><label class="input-label">Caption (optional)</label><input class="input" placeholder="Tell us about this artwork..." value="Emma's beautiful watercolor sunflower — wet-on-wet technique!"></div>
+      <div class="input-label">Tag students</div>
+      <div class="chip-row" id="tag-chips">
+        <button class="chip active" onclick="toggleChip(this)">Emma M.</button>
+        <button class="chip" onclick="toggleChip(this)">Liam K.</button>
+        <button class="chip" onclick="toggleChip(this)">Sofia R.</button>
+        <button class="chip" onclick="toggleChip(this)">James T.</button>
+        <button class="chip" onclick="toggleChip(this)">Ava P.</button>
+        <button class="chip" onclick="toggleChip(this)">Noah O.</button>
+      </div>
+      <div class="tagged-notice" id="tagged-notice">👤 Emma M. — 3 followers will be notified</div>
+      <div class="notify-info-card">📱 Push notifications sent to tagged students' followers when posted</div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: ANIMATION ===== -->
+  <div class="modal anim-modal hidden" id="modal-anim">
+    <button class="modal-x" onclick="hideModal('modal-anim')">✕</button>
+    <div id="anim-loading-state">
+      <div class="anim-artwork-frame">
+        <span class="anim-artwork-emoji" id="anim-emoji">🌻</span>
+        <div class="anim-glow-ring"></div>
+      </div>
+      <h2 class="anim-title">Bringing the art to life...</h2>
+      <p class="anim-sub">Grok AI is animating this painting with motion and sound.</p>
+      <div class="anim-steps">
+        <div class="anim-step done"><div class="anim-step-dot done">✓</div>Analyzing artwork style</div>
+        <div class="anim-step done"><div class="anim-step-dot done">✓</div>Detecting motion elements</div>
+        <div class="anim-step" id="anim-step-3"><div class="anim-step-dot spinning"></div>Generating 5-second animation</div>
+        <div class="anim-step" id="anim-step-4"><div class="anim-step-dot">4</div>Adding synchronized audio</div>
+      </div>
+      <p class="anim-cost">$0.99 · Saved to artwork thread when complete</p>
+    </div>
+    <div id="anim-done-state" class="hidden">
+      <span style="font-size:56px;display:block;text-align:center;margin-bottom:12px">🎬</span>
+      <h2 class="anim-title">Your animation is ready!</h2>
+      <p class="anim-sub" style="margin-bottom:20px">The sunflower is dancing in the breeze with sound 🌻🎵</p>
+      <div class="anim-preview-frame">
+        <span class="anim-preview-emoji floating" id="anim-preview-emoji">🌻</span>
+        <div class="anim-progress-bar"></div>
+      </div>
+      <div style="display:flex;gap:10px;width:100%;margin-top:20px">
+        <button class="btn btn-secondary btn-full" onclick="hideModal('modal-anim')">Close</button>
+        <button class="btn btn-primary btn-full" onclick="hideModal('modal-anim')">⬇️ Download MP4</button>
+      </div>
+      <p class="anim-cost" style="margin-top:12px">Shared to thread · All followers can view</p>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: GIF ===== -->
+  <div class="modal anim-modal hidden" id="modal-gif">
+    <button class="modal-x" onclick="hideModal('modal-gif')">✕</button>
+    <h2 class="anim-title">Add a GIF 🎭</h2>
+    <p class="anim-sub" style="margin-bottom:16px">Child-safe GIFs via Giphy Kids</p>
+    <input class="input gif-search" placeholder="Search GIFs..." id="gif-search-input">
+    <div class="gif-grid">
+      <div class="gif-thumb" style="background:var(--blue-light)" onclick="selectGif('👏')">👏</div>
+      <div class="gif-thumb" style="background:var(--green-light)" onclick="selectGif('🎉')">🎉</div>
+      <div class="gif-thumb" style="background:var(--pink-light)" onclick="selectGif('❤️')">❤️</div>
+      <div class="gif-thumb" style="background:var(--yellow-light)" onclick="selectGif('⭐')">⭐</div>
+      <div class="gif-thumb" style="background:var(--purple-light)" onclick="selectGif('🎨')">🎨</div>
+      <div class="gif-thumb" style="background:var(--orange-light)" onclick="selectGif('🔥')">🔥</div>
+      <div class="gif-thumb" style="background:var(--blue-light)" onclick="selectGif('🌟')">🌟</div>
+      <div class="gif-thumb" style="background:var(--green-light)" onclick="selectGif('🎊')">🎊</div>
+      <div class="gif-thumb" style="background:var(--red-light)" onclick="selectGif('😍')">😍</div>
+    </div>
+    <p class="anim-cost" style="margin-top:16px">All GIFs filtered for child-safe content</p>
+  </div>
+
+  <!-- ===== MODAL: COMMENTS ===== -->
+  <div class="modal comments-modal hidden" id="modal-comments">
+    <div class="modal-bar">
+      <button class="modal-close" onclick="hideModal('modal-comments')">✕</button>
+      <span class="modal-title">Comments</span>
+      <span></span>
+    </div>
+    <div class="scroll-area" id="comments-list">
+      <div class="comment-item">
+        <div class="avatar av-sm av-pink">MJ</div>
+        <div class="comment-bubble">
+          <div class="comment-name">Mom (Sarah J.)</div>
+          <div class="comment-text">Emma this is absolutely BEAUTIFUL! 🌻 You are so talented sweetheart!</div>
+          <button class="comment-reply-btn" onclick="setReply('Mom')">Reply</button>
+        </div>
+      </div>
+      <div class="comment-item" style="padding-left:44px">
+        <div class="avatar av-sm av-yellow">GJ</div>
+        <div class="comment-bubble">
+          <div class="comment-name">Grandma Joy</div>
+          <div class="comment-text">Grandma loves this painting so much! 😭❤️</div>
+        </div>
+      </div>
+      <div class="comment-item">
+        <div class="avatar av-sm av-blue">EM</div>
+        <div class="comment-bubble">
+          <div class="comment-name">Emma (student)</div>
+          <div class="comment-text">Thank you Mom!! 😊 I used real watercolors!</div>
+          <button class="comment-reply-btn" onclick="setReply('Emma')">Reply</button>
+        </div>
+      </div>
+    </div>
+    <div class="comment-input-bar">
+      <div class="avatar av-sm av-orange">ME</div>
+      <input class="comment-input" id="comment-text" placeholder="Add a comment...">
+      <button class="btn btn-primary btn-sm" onclick="postComment()">Send</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast hidden" id="toast"></div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
